@@ -86,4 +86,5 @@ trong đó `-r 3` để tạo các `random_state` khác nhau cho các hàm sinh 
 
 4. Khi dự đoán một file âm thanh mới, ta cắt ngẫu nhiên ra nhiều đoạn 1.5 giây khác nhau. Dùng các mô hình đã được huấn luyện để dự đoán từng đoạn. Lấy tổng các `score` (trước khi thực hiện softmax để tìm xác suất). Lớp tương ứng với `score` cao nhất sẽ tương ứng với nhãn của file âm thanh.
 
+**Star nếu bạn thấy repo hữu ích :-)**
 -- Tiep Vu --
