@@ -1,6 +1,6 @@
 # Mô hình dự đoán giọng nói vùng miền 
 
-## 1. Cấu trúc thư mục 
+## 1. Cấu trúc
 
 Thư mục bao gồm các file/thư mục con: 
 
