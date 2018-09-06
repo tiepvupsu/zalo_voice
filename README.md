@@ -73,8 +73,9 @@ python train.py -r 77
 
 trong đó `-r 3` để tạo các `random_state` khác nhau cho các hàm sinh ngẫu nhiên. Các số `3, 5, 7, 9, 77` có thể là các số `int` bất kỳ, miễn là chúng khác nhau. Các tham số mô hình khác có thể được điều chỉnh trong file `train.py`.
 
-1. Sau khi chạy xong, các model sẽ được lưu trong `saved_model`.
-2. Nếu muốn sử dụng các model mới được train này để dự đoán, ta cần đưa các đường dẫn của các model vào biến `model_path_fns` trong file `inference.py`
+4. Sau khi chạy xong, các model sẽ được lưu trong `saved_model`.
+
+5. Nếu muốn sử dụng các model mới được train này để dự đoán, ta cần đưa các đường dẫn của các model vào biến `model_path_fns` trong file `inference.py`
 
 ## 4. Hướng giải quyết bài toán
 
