@@ -29,44 +29,6 @@ from torchvision import transforms
 import h5py
 
 
-def _build_dataloader(args, train_fns, val_fns, train_lbs, val_lbs, nested_train_ids):
-    num_classes = len(set(train_lbs))
-    print('Total training files: {}'.format(len(train_fns)))
-    print('Total validation files: {}'.format(len(val_fns)))
-    print('Total classes: {}'.format(num_classes))
-
-    data_transforms = transforms.Compose([ transforms.ToTensor()]) 
-    dsets = dict()
-    dsets['train'] =  MyDatasetSTFT(train_fns, train_lbs, transform=data_transforms, 
-            duration = args.duration, test = True)
-    dsets['val'] =  MyDatasetSTFT(val_fns, val_lbs, transform=data_transforms, 
-            duration = args.duration, test = True)
-
-    # y = torch.from_numpy(np.array(train_lbs))
-    dset_loaders = dict()
-    dset_loaders['train'] = torch.utils.data.DataLoader(dsets['train'],
-            batch_size=args.batch_size,
-            # sampler = StratifiedSampler_weighted_cluster(nested_ids = nested_train_ids, 
-            #                                    batch_size = args.batch_size, 
-            #                                    gamma = args.gamma),
-            # sampler = StratifiedSampler_weighted(train_lbs, batch_size = args.batch_size, gamma = args.gamma),
-            shuffle = True, # default False            
-                                                        num_workers=16)
-    dset_loaders['val'] = torch.utils.data.DataLoader(dsets['val'],
-                                           batch_size= 31,
-                                           shuffle=False,
-                                           num_workers=16)
-    return dset_loaders 
-    
-    
-def build_dataloader(args, fns, lbs, train_idx, val_idx):
-    train_fns = [fns[i] for i in train_idx]
-    val_fns = [fns[i] for i in val_idx]
-    train_lbs = [lbs[i] for i in train_idx]
-    val_lbs = [lbs[i] for i in val_idx]
-    return _build_dataloader(args, train_fns, val_fns, train_lbs, test_lbs) 
-
-
 def _fn_clustering(fns):
     fns.sort()
     groups = []
@@ -281,31 +243,6 @@ def my_split(csv_file, select = 'all', split_by = 'file', split_to= 'train',\
         raise NotImplementedError
     return fns1, fns2, lbs1, lbs2, nested_ids1, nested_ids2 
     
-def split_merged_files(train_size = 0.9):
-    fns1 = []
-    fns2 = []
-    lbs1 = []
-    lbs2 = []
-    for i, cate in enumerate(cf.CATES):
-        fns = [os.path.join(cf.BASE_DIR_MERGED, cate, fn) 
-                for fn in os.listdir(os.path.join(cf.BASE_DIR_MERGED, cate))
-                if fn.endswith('.wav')]
-        idx = np.random.permutation(len(fns))
-        num1 = int(train_size * len(fns)) if 0 < train_size < 1 else train_size 
-        fns1.extend(fns[:num1])
-        fns2.extend(fns[num1:])
-        lbs1.extend([i]*num1)
-        lbs2.extend([i]*(len(fns) - num1))
-    return fns1, fns2, lbs1, lbs2
-
-def helper(csv_fn, fns, lbs):
-    f = open(csv_fn, 'w')
-    for i, fn in enumerate(fns):
-        line = fn + ',' + str(lbs[i])
-        if i < len(fns) -1: line += '\n'
-        f.write(line)
-    f.close()
-
 
 def load_fns_lbs_from_csv(csv_fn, merge = False, header = False):
     """
