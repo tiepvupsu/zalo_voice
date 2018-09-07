@@ -19,4 +19,4 @@ TRAINING_GT = './csv_data/training_groundtruth.csv'
 TEST_GT = './csv_data/test_groundtruth.csv'
 NUM_WORKERS = 16 
 
-INFER_ONLY = True # change this ti False if we need to train the model again 
+INFER_ONLY = True # change this to False to train the model again 
